@@ -4,9 +4,11 @@ import 'package:movie/configs/locator.dart';
 
 class MovieRepository {
   final String _apiKey = '52fd990cf637355f51d3eea6bc930bba';
+  // final GenreRepository genreRepository = getIt<GenreRepository>();
 
   Future<List<Movie>> fetchPopularMovies() async {
     try {
+      // final genreMap = await genreRepository.fetchGenres();
       final response = await dio.get(
         '/movie/popular',
         queryParameters: {
@@ -17,6 +19,14 @@ class MovieRepository {
         final List<dynamic> results = response.data['results'];
         debugPrint("====response success: ${response.data}");
         return results.map((json) => Movie.fromJson(json)).toList();
+        // return results.map((json) {
+        //   debugPrint("====parsing movie: $json");
+        //   final movie = Movie.fromJson(json);
+        //   // final genreNames = movie.getGenreNames(genreMap);
+        //   debugPrint("====genre names: $genreNames");
+        //   debugPrint("====movie after map: $movie");
+        //   return movie;
+        // }).toList();
       } else {
         debugPrint("====response failed: ${response.data}");
         throw Exception('Failed to load popular movies');

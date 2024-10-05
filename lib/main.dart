@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie/configs/app_color.dart';
 import 'package:movie/configs/app_router.dart';
 import 'package:movie/configs/locator.dart';
 import 'package:movie/data/repositories/movie_repository.dart';
@@ -39,9 +40,9 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     debugPrint('===MyApp build');
-    return MultiBlocProvider(
+    return MultiRepositoryProvider(
       providers: [
-        RepositoryProvider(
+        RepositoryProvider<MovieRepository>(
           create: (context) {
             debugPrint('===Creating RepositoryProvider');
             return MovieRepository();
@@ -50,6 +51,12 @@ class _MyAppState extends State<MyApp> {
       ],
       child: MultiBlocProvider(
         providers: [
+          // BlocProvider<SplashBloc>(
+          //   create: (context) {
+          //     debugPrint('===Creating SplashBloc');
+          //     return SplashBloc(context: context);
+          //   },
+          // ),
           BlocProvider<HomeBloc>(
             create: (context) {
               debugPrint('===Creating HomeBloc');
@@ -61,6 +68,17 @@ class _MyAppState extends State<MyApp> {
           title: 'Movie',
           theme: ThemeData(
             primarySwatch: Colors.blue,
+            scaffoldBackgroundColor: AppColor.backgroundColor,
+            elevatedButtonTheme: ElevatedButtonThemeData(
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(AppColor.primaryColor), // Primary color
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0), // Rounded rectangle shape
+                  ),
+                ),
+              ),
+            ),
           ),
           debugShowCheckedModeBanner: false,
           routerConfig: _appRouter.config(),

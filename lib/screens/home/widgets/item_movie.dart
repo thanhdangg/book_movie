@@ -29,7 +29,7 @@ class _ItemMovieState extends State<ItemMovie> {
               'https://image.tmdb.org/t/p/w500${widget.movie.posterPath}',
               fit: BoxFit.cover,
               width: double.infinity,
-              height: 200,
+              height: 230,
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -54,10 +54,11 @@ class _ItemMovieState extends State<ItemMovie> {
                 ],
               ),
             ),
-            Padding(
+            const Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                'Genres: ${widget.movie.genres}',
+                'Genres: ',
+                // 'Genres: ${widget.movie.genres}',
                 style: const TextStyle(fontSize: 14, color: Colors.grey),
               ),
             ),

@@ -16,6 +16,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late HomeBloc _homeBloc;
+  bool isLoggedIn = false; // Example flag for login status
 
   @override
   void initState() {
@@ -33,36 +34,120 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Movies'),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Image.asset(
+                      'assets/images/img_logo.png',
+                      height: 48,
+                      width: 48,
+                    ), // Image logo
+                    const SizedBox(width: 10),
+                    const Text(
+                      'Eng',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                      ),
+                    ), // Language selector
+                    const Spacer(),
+                    SizedBox(
+                      height: 40,
+                      child: isLoggedIn
+                          ? ElevatedButton(
+                              onPressed: () {
+                                // Navigate to profile
+                              },
+                              child: const Text(
+                                'Profile',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            )
+                          : ElevatedButton(
+                              onPressed: () {
+                                // Navigate to login
+                              },
+                              child: const Text(
+                                'Login',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                    ),
+                    // isLoggedIn
+                    //     ? TextButton(
+                    //         onPressed: () {
+                    //           // Navigate to profile
+                    //         },
+                    //         child: const Text('Profile'),
+                    //       )
+                    //     : TextButton(
+                    //         onPressed: () {
+                    //           // Navigate to login
+                    //         },
+                    //         child: const Text('Login'),
+                    //       ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Now in cinemas',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.search),
+                      onPressed: () {
+                        // Handle search action
+                      },
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          Expanded(child: _buildLoadMovie()),
+        ],
       ),
-      body: BlocProvider(
-        create: (context) => _homeBloc,
-        child: BlocBuilder<HomeBloc, HomeState>(
-          builder: (context, state) {
-            debugPrint("====state: ${state.status}");
-            if (state.status == BlocStateStatus.loading) {
-              return const Center(child: CircularProgressIndicator());
-            } else if (state.status == BlocStateStatus.success) {
-              return ListView.builder(
-                itemCount: state.movies?.length ?? 0,
-                itemBuilder: (context, index) {
-                  final movie = state.movies![index];
-                  return ItemMovie(
-                    movie: movie,
-                    onTapItem: (Movie movie) {
-                      debugPrint("onTapItem ${movie.title}");
-                    },
-                  );
+    );
+  }
+
+  Widget _buildLoadMovie() {
+    return BlocBuilder<HomeBloc, HomeState>(
+      builder: (context, state) {
+        if (state.status == BlocStateStatus.loading) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (state.status == BlocStateStatus.success) {
+          return GridView.builder(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: 0.55,
+            ),
+            itemCount: state.movies?.length ?? 0,
+            itemBuilder: (context, index) {
+              final movie = state.movies![index];
+              return ItemMovie(
+                movie: movie,
+                onTapItem: (Movie movie) {
+                  debugPrint("onTapItem ${movie.title}");
                 },
               );
-            } else if (state.status == BlocStateStatus.failure) {
-              return const Center(child: Text('Failed to load movies'));
-            }
-            return const Placeholder();
-          },
-        ),
-      ),
+            },
+          );
+        } else {
+          return const Center(child: Text('Failed to load movies'));
+        }
+      },
     );
   }
 }

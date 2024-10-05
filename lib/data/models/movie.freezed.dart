@@ -14,10 +14,6 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
-Movie _$MovieFromJson(Map<String, dynamic> json) {
-  return _Movie.fromJson(json);
-}
-
 /// @nodoc
 mixin _$Movie {
   int get id => throw _privateConstructorUsedError;
@@ -30,10 +26,7 @@ mixin _$Movie {
   int get voteCount => throw _privateConstructorUsedError;
   String get originalLanguage => throw _privateConstructorUsedError;
   double get popularity => throw _privateConstructorUsedError;
-  String get genres => throw _privateConstructorUsedError;
-
-  /// Serializes this Movie to a JSON map.
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  List<int> get genreIds => throw _privateConstructorUsedError;
 
   /// Create a copy of Movie
   /// with the given fields replaced by the non-null parameter values.
@@ -57,7 +50,7 @@ abstract class $MovieCopyWith<$Res> {
       int voteCount,
       String originalLanguage,
       double popularity,
-      String genres});
+      List<int> genreIds});
 }
 
 /// @nodoc
@@ -85,7 +78,7 @@ class _$MovieCopyWithImpl<$Res, $Val extends Movie>
     Object? voteCount = null,
     Object? originalLanguage = null,
     Object? popularity = null,
-    Object? genres = null,
+    Object? genreIds = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -128,10 +121,10 @@ class _$MovieCopyWithImpl<$Res, $Val extends Movie>
           ? _value.popularity
           : popularity // ignore: cast_nullable_to_non_nullable
               as double,
-      genres: null == genres
-          ? _value.genres
-          : genres // ignore: cast_nullable_to_non_nullable
-              as String,
+      genreIds: null == genreIds
+          ? _value.genreIds
+          : genreIds // ignore: cast_nullable_to_non_nullable
+              as List<int>,
     ) as $Val);
   }
 }
@@ -154,7 +147,7 @@ abstract class _$$MovieImplCopyWith<$Res> implements $MovieCopyWith<$Res> {
       int voteCount,
       String originalLanguage,
       double popularity,
-      String genres});
+      List<int> genreIds});
 }
 
 /// @nodoc
@@ -180,7 +173,7 @@ class __$$MovieImplCopyWithImpl<$Res>
     Object? voteCount = null,
     Object? originalLanguage = null,
     Object? popularity = null,
-    Object? genres = null,
+    Object? genreIds = null,
   }) {
     return _then(_$MovieImpl(
       id: null == id
@@ -223,16 +216,16 @@ class __$$MovieImplCopyWithImpl<$Res>
           ? _value.popularity
           : popularity // ignore: cast_nullable_to_non_nullable
               as double,
-      genres: null == genres
-          ? _value.genres
-          : genres // ignore: cast_nullable_to_non_nullable
-              as String,
+      genreIds: null == genreIds
+          ? _value._genreIds
+          : genreIds // ignore: cast_nullable_to_non_nullable
+              as List<int>,
     ));
   }
 }
 
 /// @nodoc
-@JsonSerializable()
+
 class _$MovieImpl implements _Movie {
   const _$MovieImpl(
       {required this.id,
@@ -245,10 +238,8 @@ class _$MovieImpl implements _Movie {
       required this.voteCount,
       required this.originalLanguage,
       required this.popularity,
-      required this.genres});
-
-  factory _$MovieImpl.fromJson(Map<String, dynamic> json) =>
-      _$$MovieImplFromJson(json);
+      required final List<int> genreIds})
+      : _genreIds = genreIds;
 
   @override
   final int id;
@@ -270,12 +261,17 @@ class _$MovieImpl implements _Movie {
   final String originalLanguage;
   @override
   final double popularity;
+  final List<int> _genreIds;
   @override
-  final String genres;
+  List<int> get genreIds {
+    if (_genreIds is EqualUnmodifiableListView) return _genreIds;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_genreIds);
+  }
 
   @override
   String toString() {
-    return 'Movie(id: $id, title: $title, overview: $overview, posterPath: $posterPath, backdropPath: $backdropPath, releaseDate: $releaseDate, voteAverage: $voteAverage, voteCount: $voteCount, originalLanguage: $originalLanguage, popularity: $popularity, genres: $genres)';
+    return 'Movie(id: $id, title: $title, overview: $overview, posterPath: $posterPath, backdropPath: $backdropPath, releaseDate: $releaseDate, voteAverage: $voteAverage, voteCount: $voteCount, originalLanguage: $originalLanguage, popularity: $popularity, genreIds: $genreIds)';
   }
 
   @override
@@ -301,10 +297,9 @@ class _$MovieImpl implements _Movie {
                 other.originalLanguage == originalLanguage) &&
             (identical(other.popularity, popularity) ||
                 other.popularity == popularity) &&
-            (identical(other.genres, genres) || other.genres == genres));
+            const DeepCollectionEquality().equals(other._genreIds, _genreIds));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -318,7 +313,7 @@ class _$MovieImpl implements _Movie {
       voteCount,
       originalLanguage,
       popularity,
-      genres);
+      const DeepCollectionEquality().hash(_genreIds));
 
   /// Create a copy of Movie
   /// with the given fields replaced by the non-null parameter values.
@@ -327,13 +322,6 @@ class _$MovieImpl implements _Movie {
   @pragma('vm:prefer-inline')
   _$$MovieImplCopyWith<_$MovieImpl> get copyWith =>
       __$$MovieImplCopyWithImpl<_$MovieImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$MovieImplToJson(
-      this,
-    );
-  }
 }
 
 abstract class _Movie implements Movie {
@@ -348,9 +336,7 @@ abstract class _Movie implements Movie {
       required final int voteCount,
       required final String originalLanguage,
       required final double popularity,
-      required final String genres}) = _$MovieImpl;
-
-  factory _Movie.fromJson(Map<String, dynamic> json) = _$MovieImpl.fromJson;
+      required final List<int> genreIds}) = _$MovieImpl;
 
   @override
   int get id;
@@ -373,7 +359,7 @@ abstract class _Movie implements Movie {
   @override
   double get popularity;
   @override
-  String get genres;
+  List<int> get genreIds;
 
   /// Create a copy of Movie
   /// with the given fields replaced by the non-null parameter values.
